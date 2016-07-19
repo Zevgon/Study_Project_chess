@@ -1,6 +1,5 @@
 require_relative 'board'
 require_relative 'human_player'
-require 'byebug'
 
 class Game
   attr_reader :board, :display, :current_player, :players
@@ -18,7 +17,6 @@ class Game
   def play
     until board.checkmate?(current_player)
       begin
-        byebug
         from_pos, to_pos = players[current_player].make_move(board)
         board.move_piece(current_player, from_pos, to_pos)
 

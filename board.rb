@@ -33,12 +33,24 @@ class Board #1. make grid 2.populate grid 3. moves pieces (if valid move from Pi
   end
 
   def dup
+    duped_board = Board.new(false)
+
+    @grid.each_with_index do |row, i|
+      row.each_with_index do |square,j|
+        duped_board[[i, j]] = square
+      end
+    end
+    duped_board
   end
 
   def empty?(pos)
   end
 
   def in_check?(color)
+    king_pos = self.find_king(color)
+    self.pieces.any? do |piece|
+      (piece.color != color) && piece.moves.include?(king_pos)
+    end
   end
 
   def move_piece(turn_color, start_pos, end_pos)
@@ -53,32 +65,40 @@ class Board #1. make grid 2.populate grid 3. moves pieces (if valid move from Pi
   end
 
   def pieces
+    @grid.flatten.select {|piece| !piece.empty?}
   end
 
   def valid_pos?(pos)
   end
 
-  protected
+  # protected
 
   def fill_back_row(color)
-    row_num = color == :white ? 0 : 7
+    row_num = color == :black ? 0 : 7
 
-    @grid[row_num] = [Rook.new(color, self, [row_num, 0]).to_s,
-                    Knight.new(color, self, [row_num, 1]).to_s,
-                    Bishop.new(color, self, [row_num, 2]).to_s,
-                    Queen.new(color, self, [row_num, 3]).to_s,
-                    King.new(color, self, [row_num, 4]).to_s,
-                    Bishop.new(color, self, [row_num, 5]).to_s,
-                    Knight.new(color, self, [row_num, 6]).to_s,
-                    Rook.new(color, self, [row_num, 7]).to_s]
+    @grid[row_num] = [Rook.new(color, self, [row_num, 0]),
+                    Knight.new(color, self, [row_num, 1]),
+                    Bishop.new(color, self, [row_num, 2]),
+                    Queen.new(color, self, [row_num, 3]),
+                    King.new(color, self, [row_num, 4]),
+                    Bishop.new(color, self, [row_num, 5]),
+                    Knight.new(color, self, [row_num, 6]),
+                    Rook.new(color, self, [row_num, 7])]
   end
 
   def fill_pawns_row(color)
-    row_num = color == :white ? 1 : 6
-    @grid[row_num].map!.with_index { |square, idx| square = Pawn.new(color, self, [row_num, idx]).to_s }
+    row_num = color == :black ? 1 : 6
+    @grid[row_num].map!.with_index { |square, idx| square = Pawn.new(color, self, [row_num, idx]) }
   end
 
   def find_king(color)
+    @grid.each_with_index do |row, row_idx|
+      row.each_with_index do |piece, piece_idx|
+        return piece if piece.is_a?(King) && piece.color == color
+      end
+    end
+
+    "King not found!?!?!?!?"
   end
 
   def make_starting_grid(fill_board)

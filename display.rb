@@ -1,6 +1,6 @@
 require_relative "board"
 require_relative "cursorable"
-require_relative "piece"
+require_relative "pieces"
 require "colorize"
 
 class Display # make stuff pretty
