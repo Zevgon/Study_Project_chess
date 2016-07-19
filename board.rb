@@ -69,6 +69,7 @@ class Board #1. make grid 2.populate grid 3. moves pieces (if valid move from Pi
   end
 
   def valid_pos?(pos)
+    pos.all? { |el| el.between?(0, 7) }
   end
 
   # protected
