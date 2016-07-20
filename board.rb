@@ -1,3 +1,4 @@
+require 'byebug'
 require_relative "pieces"
 require 'colorize'
 
@@ -11,7 +12,7 @@ class Board #1. make grid 2.populate grid 3. moves pieces (if valid move from Pi
   attr_accessor :grid
   def initialize(fill_board = true)
     @sentinel = NullPiece.instance.to_s
-  make_starting_grid(fill_board)
+    make_starting_grid(fill_board)
     # Board.populate_board(@grid)
   end
 
@@ -62,6 +63,11 @@ class Board #1. make grid 2.populate grid 3. moves pieces (if valid move from Pi
   end
 
   def move_piece!(from_pos, to_pos)
+    piece = self[from_pos]
+    self[to_pos] = piece
+    self[from_pos] = @sentinel
+    piece.pos = to_pos
+
   end
 
   def pieces
@@ -112,6 +118,5 @@ class Board #1. make grid 2.populate grid 3. moves pieces (if valid move from Pi
     end
   end
 
-  private
   attr_reader :sentinel
 end

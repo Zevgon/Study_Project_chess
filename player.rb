@@ -6,12 +6,26 @@ class Player
   end
 
   def move # returns a
-    result = nil
-    until result
+    from_pos, to_pos = nil, nil
+    until from_pos && to_pos
       @display.render
-      result = @display.get_input
+
+      if from_pos
+        # puts "#{color}'s turn. Move to where?"
+        to_pos = @display.get_input
+
+        # display.reset! if to_pos
+      else
+        # puts "#{color}'s turn. Move from where?"
+        from_pos = @display.get_input
+
+        # display.reset! if from_pos
+      end
     end
-    result
+    @display.board[to_pos] = @display.board[from_pos]
+    @display.board[from_pos] = @display.board.sentinel
+    @display.render
+
   end
 end
 

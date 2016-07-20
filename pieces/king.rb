@@ -9,7 +9,7 @@ class King < Piece
   end
 
   protected
-  
+
   def move_diffs
     (-1..1).to_a.permutation(2).to_a
   end

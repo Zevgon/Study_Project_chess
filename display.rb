@@ -6,6 +6,7 @@ require "colorize"
 class Display # make stuff pretty
   include Cursorable
 
+  attr_accessor :board
   def initialize(board)
     @board = board
     @cursor_pos = [0, 0]
@@ -33,7 +34,7 @@ class Display # make stuff pretty
     else
       bg = :blue
     end
-    { background: bg, color: :white }
+    { background: bg }
   end
 
   def render
